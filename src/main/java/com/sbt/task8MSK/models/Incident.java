@@ -1,14 +1,28 @@
 package com.sbt.task8MSK.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import java.time.LocalTime;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.*;
+import java.time.LocalTime;
+import java.util.List;
+
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Incident {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    String incidentId;
     String sourceSystem;
     String riskProfile;
+    @Column(length = 500)
     String incidentName;
+    @Column(length = 2000)
     String incidentDescription;
     String incidentStatus;
     String author;
@@ -23,8 +37,13 @@ public class Incident {
     LocalTime timeFirstValidated;
     LocalTime timeLastValidated;
     String clientType;
-
-
-
-
+    @OneToMany(mappedBy = "incident", cascade = CascadeType.ALL)
+//    @JoinColumn(name = "nonFinEffectId")
+    List<NonFinEffectInstance> nonFinEffectInstances;
+    @OneToMany(mappedBy = "incident", cascade = CascadeType.ALL)
+    List<RecoveryInstance> recoveryInstances;
+    @OneToMany(mappedBy = "incident", cascade = CascadeType.ALL)
+    List<CauseInstance> causeInstances;
 }
+
+
