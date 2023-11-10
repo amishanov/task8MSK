@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -16,7 +18,8 @@ import java.util.List;
 @Entity
 public class Incident {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
     String incidentId;
     String sourceSystem;
     String riskProfile;
@@ -28,17 +31,16 @@ public class Incident {
     String author;
     String owner;
     String verifier;
-    LocalTime timeCreated;
-    LocalTime dateNotified;
-    LocalTime dateDiscovered;
-    LocalTime dateOfIncident;
-    LocalTime dateFinished;
-    LocalTime dateExpired;
-    LocalTime timeFirstValidated;
-    LocalTime timeLastValidated;
+    LocalDateTime timeCreated;
+    LocalDateTime dateNotified;
+    LocalDateTime dateDiscovered;
+    LocalDateTime dateOfIncident;
+    LocalDateTime dateFinished;
+    LocalDateTime dateExpired;
+    LocalDateTime timeFirstValidated;
+    LocalDateTime timeLastValidated;
     String clientType;
     @OneToMany(mappedBy = "incident", cascade = CascadeType.ALL)
-//    @JoinColumn(name = "nonFinEffectId")
     List<NonFinEffectInstance> nonFinEffectInstances;
     @OneToMany(mappedBy = "incident", cascade = CascadeType.ALL)
     List<RecoveryInstance> recoveryInstances;
